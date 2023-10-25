@@ -26,7 +26,11 @@ With Vaani, you can easily convert text-based content, such as text messages, we
 
 ## Installation
 
-Detailed installation instructions can be found in the [Installation Guide](https://github.com/your-username/vaani/wiki/Installation-Guide).
+If conda is not installed refer this  [INSTALL CONDA ](https://docs.conda.io/projects/conda/en/23.1.x/user-guide/install/windows.html).
+
+Then run this in terminal
+
+```conda env create -f environment.yml```
 
 ## Getting Started
 
