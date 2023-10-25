@@ -1,4 +1,4 @@
-name: base
+name: vaani
 channels:
   - pytorch
   - nvidia
@@ -201,13 +201,9 @@ dependencies:
       - thop==0.1.1-2209072238
       - threadpoolctl==3.2.0
       - tifffile==2023.9.26
-      - torch==2.1.0+cu121
-      - torchaudio==2.1.0
-      - torchvision==0.16.0+cu121
       - ttach==0.0.3
       - tzdata==2023.3
-      - ultralytics==8.0.199
       - urllib3==2.0.6
       - werkzeug==3.0.0
       - wrapt==1.14.1
-prefix: C:\Users\singh\anaconda3\envs\MLPLANT
+prefix: ./vaani

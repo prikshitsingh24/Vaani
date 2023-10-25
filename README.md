@@ -28,9 +28,14 @@ With Vaani, you can easily convert text-based content, such as text messages, we
 
 If conda is not installed refer this  [INSTALL CONDA ](https://docs.conda.io/projects/conda/en/23.1.x/user-guide/install/windows.html).
 
-Then run this in terminal
+Then run this in terminal and activate the conda environment `vaani`
 
 ```conda env create -f environment.yml```
+
+
+### Install Pytorch+cuda
+Please install pytorch cuda according to your configuration from here [INSTALL PYTORCH+CuDA](https://pytorch.org/get-started/locally/)
+
 
 ## Getting Started
 
