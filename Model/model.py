@@ -23,7 +23,7 @@ class Discriminator(nn.Module):
             self._block(features_d * 2, features_d * 4, 4, 2, 1),
             self._block(features_d * 4, features_d * 8, 4, 2, 1),
             # After all _block img output is 4x4 (Conv2d below makes into 1x1)
-            nn.Conv2d(features_d * 8, 1, kernel_size=4, stride=2, padding=0),
+            nn.Conv2d(features_d * 8, 1, kernel_size=4, stride=2, padding=1),
         )
         self.embed=nn.Embedding(num_classes,img_size*img_size)
 
@@ -50,6 +50,7 @@ class Discriminator(nn.Module):
 class Generator(nn.Module):
     def __init__(self, channels_noise, channels_img, features_g,num_classes,img_size,embed_size):
         super(Generator, self).__init__()
+        self.img_size=img_size
         self.net = nn.Sequential(
             # Input: N x channels_noise x 1 x 1
             self._block(channels_noise+embed_size, features_g * 16, 4, 1, 0),  # img: 4x4
@@ -79,7 +80,7 @@ class Generator(nn.Module):
         )
 
     def forward(self, x,labels):
-        embedding=self.embed(labels).unsqueeze(2).unsqueenze(3)
+        embedding=self.embed(labels).unsqueeze(2).unsqueeze(3)
         x=torch.cat([x,embedding],dim=1)
         return self.net(x)
 
@@ -92,7 +93,7 @@ def initialize_weights(model):
 
 
 def test():
-    N, in_channels, H, W = 8, 3, 64, 64
+    N, in_channels, H, W = 8, 3, 120, 120
     noise_dim = 100
     x = torch.randn((N, in_channels, H, W))
     disc = Discriminator(in_channels, 8)
