@@ -1,1 +1,6 @@
 /vaani
+/logs
+/Model/__pycache__
+/vaani_models
+/generated_images
+/Model/Hyperparameter/__pycache__
