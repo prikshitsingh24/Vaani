@@ -23,7 +23,6 @@ class Discriminator(nn.Module):
             self._block(features_d * 4, features_d * 8, 4, 2, 1),
             # After all _block img output is 4x4 (Conv2d below makes into 1x1)
             nn.Conv2d(features_d * 8, 1, kernel_size=4, stride=2, padding=0),
-            nn.Sigmoid(),
         )
 
     def _block(self, in_channels, out_channels, kernel_size, stride, padding):
@@ -36,7 +35,7 @@ class Discriminator(nn.Module):
                 padding,
                 bias=False,
             ),
-            # nn.BatchNorm2d(out_channels),
+            nn.InstanceNorm2d(out_channels, affine=True),
             nn.LeakyReLU(0.2),
         )
 
@@ -70,7 +69,7 @@ class Generator(nn.Module):
                 padding,
                 bias=False,
             ),
-            # nn.BatchNorm2d(out_channels),
+            nn.BatchNorm2d(out_channels),
             nn.ReLU(),
         )
 
@@ -94,8 +93,6 @@ def test():
     gen = Generator(noise_dim, in_channels, 8)
     z = torch.randn((N, noise_dim, 1, 1))
     assert gen(z).shape == (N, in_channels, H, W), "Generator test failed"
-    print("Success, tests passed!")
 
 
-if __name__ == "__main__":
-    test()
+# test()
