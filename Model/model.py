@@ -53,10 +53,16 @@ class Generator(nn.Module):
         self.img_size=img_size
         self.net = nn.Sequential(
             # Input: N x channels_noise x 1 x 1
-            self._block(channels_noise+embed_size, features_g * 16, 4, 1, 0),  # img: 4x4
-            self._block(features_g * 16, features_g * 8, 4, 2, 1),  # img: 8x8
-            self._block(features_g * 8, features_g * 4, 4, 2, 1),  # img: 16x16
-            self._block(features_g * 4, features_g * 2, 4, 2, 1),  # img: 32x32
+            self._block(channels_noise + embed_size, features_g * 64, 4, 1, 0),  # img: 4x4
+            self._block(features_g * 64, features_g * 32, 4, 2, 1),  # img: 8x8
+            self._block(features_g * 32, features_g * 16, 4, 2, 1),  # img: 8x8
+            self._block(features_g * 16, features_g * 8, 4, 2, 1),  # img: 16x16
+            self._block(features_g * 8, features_g * 4, 4, 2, 1),  # img: 32x32
+            self._block(features_g * 4, features_g * 2, 4, 2, 1),  # img: 64x64
+            # self._block(channels_noise+embed_size, features_g * 16, 4, 1, 0),  # img: 4x4
+            # self._block(features_g * 16, features_g * 8, 4, 2, 1),  # img: 8x8
+            # self._block(features_g * 8, features_g * 4, 4, 2, 1),  # img: 16x16
+            # self._block(features_g * 4, features_g * 2, 4, 2, 1),  # img: 32x32
             nn.ConvTranspose2d(
                 features_g * 2, channels_img, kernel_size=4, stride=2, padding=1
             ),
