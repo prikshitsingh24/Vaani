@@ -32,8 +32,9 @@ generator = Generator(Z_DIM, CHANNELS_IMG, FEATURES_GEN, NUM_CLASSES, IMG_SIZE, 
 generator.load_state_dict(torch.load("E:\\ml_start\\GAN_ISL\\Vaani\\vaani_models\\generator.pth"))
 generator.eval()  # Set the generator in evaluation mode
 
+userInput=int(input("Enter alphabet or number between 0 - 34 : "))
 # Specify the label you want to generate images for
-desired_label = torch.tensor([15,6,7,9,10,15,23,25,31,16]).to(device)  # Replace your_desired_label with the desired label
+desired_label = torch.tensor([userInput]).to(device)  # Replace your_desired_label with the desired label
 
 # Generate random noise vectors (you can change the number of vectors)
 num_samples =len(desired_label) 
