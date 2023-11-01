@@ -86,8 +86,13 @@ class Generator(nn.Module):
         )
 
     def forward(self, x,labels):
+        # print(f"x.shape {x.shape}")
+        # print(f"label {labels}")
         embedding=self.embed(labels).unsqueeze(2).unsqueeze(3)
+        
         x=torch.cat([x,embedding],dim=1)
+        
+        
         return self.net(x)
 
 

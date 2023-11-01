@@ -134,6 +134,9 @@ from model import Discriminator, Generator, initialize_weights
 import pandas as pd
 
 from Hyperparameter.config import config
+from data.provideCustomdata import getCustomdata
+from data.customData import CustomDataset
+
 
 
 # Access hyperparameters
@@ -153,6 +156,7 @@ NUM_EPOCHS = config["NUM_EPOCHS"]
 FEATURES_CRITIC = config["FEATURES_CRITIC"]
 CRITIC_ITERATIONS = config["CRITIC_ITERATIONS"]
 LAMBDA_GP = config["LAMBDA_GP"]
+DATA_ROOT =config[" DATA_ROOT"]
 
 # Specify the directory to save the models
 save_dir = "./vaani_models"
@@ -165,15 +169,30 @@ transforms = transforms.Compose([
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
 ])
 data_root = "E:\\ml_start\\GAN_ISL\\Indian"
+labels,imageFolder=getCustomdata()
+
+
+
 # Create a custom dataset using ImageFolder with labels
-dataset = torchvision.datasets.ImageFolder(root=data_root, transform=transforms)
+dataset = CustomDataset(data_root,labels, transforms)
+
+# dataset = torchvision.datasets.ImageFolder(root=data_root, transform=transforms)
+
+# print(dataset)
 # DataLoader should return (real images, labels) tuples
 loader = DataLoader(
     dataset,
     batch_size=BATCH_SIZE,
     shuffle=True,
     pin_memory=True,
+    
 )
+
+
+# for i in range (loader.dataset.__len__()):
+#     print(loader.dataset.__getitem__(i))
+
+# print(loader.dataset.__len__())
 
 # Initialize gen and critic
 gen = Generator(Z_DIM, CHANNELS_IMG, FEATURES_GEN, NUM_CLASSES, IMG_SIZE, GEN_EMBEDDING).to(device)
@@ -200,6 +219,11 @@ for epoch in range(NUM_EPOCHS):
         real = real.to(device)
         cur_batch_size = real.shape[0]
         labels = labels.to(device)
+        
+        
+        # print(f"real {real}")
+        # print(f"batch_idx {batch_idx}")
+        # print(f"labels {labels}")
 
         # Train Critic: max E[critic(real)] - E[critic(fake)]
         # Equivalent to minimizing the negative of that

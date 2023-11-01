@@ -10,6 +10,7 @@ from utils import gradient_penalty, save_checkpoint, load_checkpoint
 from model import Discriminator, Generator, initialize_weights
 import pandas as pd
 from  Hyperparameter.config import config
+from data.preprocessor import wordPreproccessor
 
 
 device = "cuda" if torch.cuda.is_available() else print("running on cpu")
@@ -32,9 +33,9 @@ generator = Generator(Z_DIM, CHANNELS_IMG, FEATURES_GEN, NUM_CLASSES, IMG_SIZE, 
 generator.load_state_dict(torch.load("E:\\ml_start\\GAN_ISL\\Vaani\\vaani_models\\generator.pth"))
 generator.eval()  # Set the generator in evaluation mode
 
-userInput=int(input("Enter alphabet or number between 0 - 34 : "))
+userInput=wordPreproccessor(input("Enter alphabet or number between 0 - 9 : ").split(','))
 # Specify the label you want to generate images for
-desired_label = torch.tensor([userInput]).to(device)  # Replace your_desired_label with the desired label
+desired_label = torch.tensor(userInput).to(device)  # Replace your_desired_label with the desired label
 
 # Generate random noise vectors (you can change the number of vectors)
 num_samples =len(desired_label) 
@@ -57,33 +58,6 @@ vutils.save_image(generated_images, image_filename, normalize=True)
 
 print("Upscalling the image wait !")
 
-# traditional method
-# import cv2
-
-# # Load the image
-# input_image_path = '.\\generated_images\\generated_images.png'
-# output_image_path = '.\\generated_images\\generated_imagesH.png'  # Change to your desired output directory
-
-# # Load the image
-# image = cv2.imread(input_image_path)
-
-# # Specify the scaling factor (e.g., 2x for doubling the size)
-# scale_factor = 8
-
-# # Perform bilinear interpolation for upscaling
-# upscaled_image = cv2.resize(image, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
-
-# # Apply Gaussian blur to smooth the image
-# blurred_image = cv2.GaussianBlur(upscaled_image, (0, 0), sigmaX=2)
-
-# # Sharpen the blurred image using unsharp masking
-# sharpened_image = cv2.addWeighted(upscaled_image, 1.5, blurred_image, -0.5, 0)
-
-# # Save the final upscaled and sharpened image
-# cv2.imwrite(output_image_path, sharpened_image)
-
-
-# print(f"Image upscaled and saved to {output_image_path}")
 
 import cv2
 from cv2 import dnn_superres
@@ -113,10 +87,12 @@ from matplotlib import pyplot as plt
 image_grid = vutils.make_grid(generated_images, normalize=True)
 plt.figure(figsize=(15, 15))
 plt.imshow(image_grid.permute(1, 2, 0).cpu().numpy())
-plt.axis('off')
+plt.axis('on')
+plt.xlabel("GENRATED IMAGE")
 plt.show()
 # OpenCV upscaled
 plt.figure(figsize=(15, 15))
 plt.imshow(result[:,:,::-1])
-plt.axis('off')
+plt.axis('on')
+plt.xlabel("UPSCALED IMAGE")
 plt.show()
